@@ -4,7 +4,6 @@ import sys
 import itertools
 
 
-
 flag = True
 vertex_points = []
 vertex_inter_points = []
@@ -34,7 +33,9 @@ def command_a_function(street_points):
     # print("Input to command_a_function"+street_points)
     street = re.compile(r'"([^"^[0-9]*)"')
     points = re.compile(r'(\(-?[0-9]+,-?[0-9]+\))\s*')
-    street_name = street.findall(street_points)
+    street_name_temp = street.findall(street_points)
+    street_name=str(street_name_temp).lower()
+    # print(type(street_name))
     if len(street_name) == 0:
         print >> sys.stderr, "Error: Enter Street name along with points - command_a_function"
     points_name = points.findall(street_points)
@@ -44,6 +45,7 @@ def command_a_function(street_points):
         pass
         # print("Extracted points from command_a_function")
         # print(points_name)
+
     streets_and_points.append(street_name)
     streets_and_points.append(points_name)
     return streets_and_points
@@ -52,7 +54,9 @@ def command_a_function(street_points):
 def command_c_function(street_points,streets_and_points_temp):
     # print(streets_and_points_temp)
     street = re.compile(r'"([^"^[0-9]*)"')
-    street_name = street.findall(street_points)
+    street_name_temp = street.findall(street_points)
+    street_name = str(street_name_temp).lower()
+    # print(type(street_name))
     points = re.compile(r'(\([0-9]+,[0-9]+\))\s*')
     points_name = points.findall(street_points)
     if len(points_name) < 2:
@@ -74,7 +78,9 @@ def command_r_function(street_points,streets_and_points_temp):
     # print("Called remove function")
     # print(streets_and_points_temp)
     street = re.compile(r'"([^"^[0-9]*)"')
-    street_name = street.findall(street_points)
+    street_name_temp = street.findall(street_points)
+    street_name = str(street_name_temp).lower()
+    # print(type(street_name))
     if len(streets_and_points_temp) == 0:
         print >> sys.stderr, "Error: First enter the street info and then try to change it"
     for sp in streets_and_points_temp:
@@ -97,11 +103,12 @@ def command_g_function(streets_and_points):
     # print(streets_length)
     for sp in streets_length:
         calculate_intersection_points(streets_and_points[sp], streets_and_points[sp+1])
-    print("V = {")
-    length = range(len(vertex_points))
-    for i in length:
-        print('{0}: {1}'.format(i+1, vertex_points[i]))
-    print("}")
+    # print("V = {")
+    print_vertices_function(vertex_points)
+    # length = range(len(vertex_points))
+    # for i in length:
+    #     print('{0}: {1}'.format(i+1, vertex_points[i]))
+    # print("}")
     finding_edges(vertex_inter_points,vertex_points,streets_and_points)
 
 
@@ -255,9 +262,7 @@ def points_on_same_street(streets_and_points_temp, edges_points_all, vertex_poin
         #     print("both flags are true- so appending the pair to final edges -- both flags are true- so appending the pair to final edges -- both flags are true- so appending the pair to final edges")
         #
     # print("printing edges after  - edges pairs on same street function")
-    print("E = {")
-    print(edges_indexes)
-    print("}")
+    print_edges_function(edges_indexes)
 
 
 def check_street(stp_points, point_check):
@@ -402,8 +407,35 @@ def check_vertex_between(intersection_point,point_two,vertex_points,stp):
     return is_between or is_endpoint
 
 
+def print_vertices_function(vertex_points_temp):
+    # print(type(vertex_points_temp))
+    # print(type(vertex_points_temp[0]))
+    length = range(len(vertex_points_temp))
+    print("V = {")
+    for i in length:
+        # print(type(vertex_points_temp[i]))
+        print('{0}: ({1:.2f},{2:.2f})'.format(i + 1, vertex_points_temp[i][0],vertex_points_temp[i][1]))
+    print("}")
 
 
+def print_edges_function(edges_indexes):
+    # print(type(edges_indexes))
+    # print(type(edges_indexes[0]))
+    # for tu in edges_indexes:
+    #     if (tu[1],tu[0]) in edges_indexes:
+    #         return edges_indexes.remove((tu[1], tu[0]))
+    for tu in edges_indexes:
+        if tuple_reverse(tu) in edges_indexes:
+            edges_indexes.remove(tuple_reverse(tu))
+    print("E = {")
+    for tup in edges_indexes:
+        print("<{0},{1}>".format(tup[0],tup[1]))
+    # print(edges_indexes)
+    print("}")
 
-# is_point_between('(2,2)','(5,5)',(4,2),"is point between")
+
+def tuple_reverse(tuples):
+    new_tup = tuples[::-1]
+    return new_tup
+
 

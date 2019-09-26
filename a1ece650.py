@@ -139,6 +139,9 @@ def main():
                     input_command_split(input_command)
         except:
             print >> sys.stderr, 'Error: Please make sure inputs are Correct'
+    print("finsihed reading input")
+    sys.exit(0)
+     
 
 
 if __name__ == '__main__':

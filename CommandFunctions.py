@@ -1,7 +1,6 @@
 import re
 import math
 import sys
-import Workout
 import itertools
 
 

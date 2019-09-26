@@ -77,6 +77,7 @@ def command_c_function(street_points,streets_and_points_temp):
 def command_r_function(street_points,streets_and_points_temp):
     # print("Called remove function")
     # print(streets_and_points_temp)
+    flag_remove = True
     street = re.compile(r'"([^"^[0-9]*)"')
     street_name_temp = street.findall(street_points)
     street_name = str(street_name_temp).lower()
@@ -86,7 +87,11 @@ def command_r_function(street_points,streets_and_points_temp):
     for sp in streets_and_points_temp:
         if sp.st_name == street_name:
             streets_and_points_temp.remove(sp)
+            flag_remove = False
             break
+    if flag_remove :
+        print >> sys.stderr, 'Error: No Such street to remove'
+    flag_remove =True
     return streets_and_points_temp
 
 

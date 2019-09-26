@@ -131,7 +131,9 @@ def input_command_split(input_cmd_temp):
 def main():
     while True:
         try:
-            input_command = raw_input()
+            input_command = sys.stdin.readline()
+            if input_command == '':
+                break
             if input_command_check(input_command):
                 if input_command[0] == 'g':
                     command_g_function(streets_and_points)
@@ -139,7 +141,7 @@ def main():
                     input_command_split(input_command)
         except:
             print >> sys.stderr, 'Error: Please make sure inputs are Correct'
-    print("finsihed reading input")
+    print 'Finished reading input'
     sys.exit(0)
      
 

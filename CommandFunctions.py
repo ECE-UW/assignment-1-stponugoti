@@ -252,16 +252,9 @@ def points_on_same_street(streets_and_points_temp, edges_points_all, vertex_poin
                 # print(vertex_points_temp[ckp[0]-1][0])
                 # print( vertex_points_temp[ckp[0]-1][1])
                 if float(points_here[0]) == vertex_points_temp[ckp[0]-1][0] and float(points_here[1]) == vertex_points_temp[ckp[0]-1][1]:
-                    print("making flag one true for ")
-                    print(points_here[0])
-                    print(vertex_points_temp[ckp[0]-1])
                     stp_points_flag_one = True
                 if float(points_here[0]) == vertex_points_temp[ckp[1]-1][0] and float(points_here[1]) == vertex_points_temp[ckp[1]-1][1]:
-                    print(points_here[1])
-                    print(vertex_points_temp[ckp[1]-1])
                     stp_points_flag_two = True
-                print(stp_points_flag_one)
-                print(stp_points_flag_two)
             if stp_points_flag_one:
                 # print("MAKING FLAG ONE TRUE as directly in street points - edges pairs on same street")
                 flagone=True

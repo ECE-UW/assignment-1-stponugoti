@@ -384,14 +384,16 @@ def is_point_between(intersection, vertex, checkpoint,type_of_function):
         # print(type(checkpoint_temp))
         # print(checkpoint[0], checkpoint[1])
         if float(checkpoint[0]) == float(points_one_t[0]) == float(points_two_t[0]) :
-            if ((float(points_one_t[1]) < float(checkpoint[1])<float(points_two_t[1])) or float(points_one_t[1]) > float(checkpoint[1]) > float(points_two_t[1])):
+            if ((float(points_one_t[1]) <= float(checkpoint[1])<=float(points_two_t[1])) or float(points_one_t[1]) >= float(checkpoint[1]) >= float(points_two_t[1])):
+            #if ((float(points_one_t[1]) < float(checkpoint[1])<float(points_two_t[1])) or float(points_one_t[1]) > float(checkpoint[1]) > float(points_two_t[1])):
                 # print("returning true from is_point_between function - condition 1")
                 return True
             else:
                 # print("returning False from is_point_between function - condition 1")
                 return False
         elif float(checkpoint[1]) == float(points_one_t[1]) == float(points_two_t[1]):
-            if ((float(points_one_t[0]) < float(checkpoint[0])<float(points_two_t[0])) or float(points_one_t[0]) > float(checkpoint[0]) > float(points_two_t[0])):
+            if ((float(points_one_t[0]) <= float(checkpoint[0])<=float(points_two_t[0])) or float(points_one_t[0]) >= float(checkpoint[0]) >= float(points_two_t[0])):
+            #if ((float(points_one_t[0]) < float(checkpoint[0])<float(points_two_t[0])) or float(points_one_t[0]) > float(checkpoint[0]) > float(points_two_t[0])):
                 # print("returning true from is_point_between function - condition 2")
                 return True
             else:
@@ -456,6 +458,7 @@ def print_edges_function(edges_indexes):
     # for tu in edges_indexes:
     #     if (tu[1],tu[0]) in edges_indexes:
     #         return edges_indexes.remove((tu[1], tu[0]))
+    edges_indexes = list(set(edges_indexes))
     for tu in edges_indexes:
         if tuple_reverse(tu) in edges_indexes:
             edges_indexes.remove(tuple_reverse(tu))

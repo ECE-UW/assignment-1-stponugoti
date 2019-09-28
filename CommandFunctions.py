@@ -24,6 +24,10 @@ class GraphPoints:
 
 
 def calculate_distance(x1, y1, x2, y2):
+    x1 = float(x1)
+    y1 = float(y1)
+    x2 = float(x2)
+    y2 = float(y2)
     dist = math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
     return dist
 
@@ -232,13 +236,40 @@ def points_on_same_street(streets_and_points_temp, edges_points_all, vertex_poin
             # print(ckp)
             # print("Street Selected to check for edge index pair in LOOP 1 - edges pairs on same street")
             # print(stp)
-            if vertex_points_temp[ckp[0]-1] in stp.points:
+             # print(vertex_points_temp[ckp[0]-1])
+                # print("MAKING FLAG ONE TRUE as directly in street points - edges pairs on same street")		            # print(type(vertex_points_temp[ckp[0]-1]))
+            # print(vertex_points_temp[ckp[1]-1])
+            # print(type(vertex_points_temp[ckp[1]-1]))
+            points_temp_one_here = re.compile(r'(-?[0-9]+)\s*')
+            stp_points_flag_one = False
+            stp_points_flag_two = False
+            for stpoint in stp.points:
+                points_here = points_temp_one_here.findall(stpoint)
+                # print(points_here)
+                # print(type(points_here))
+                # print(float(points_here[0]))
+                # print(float(points_here[1]))
+                # print(vertex_points_temp[ckp[0]-1][0])
+                # print( vertex_points_temp[ckp[0]-1][1])
+                if float(points_here[0]) == vertex_points_temp[ckp[0]-1][0] and float(points_here[1]) == vertex_points_temp[ckp[0]-1][1]:
+                    print("making flag one true for ")
+                    print(points_here[0])
+                    print(vertex_points_temp[ckp[0]-1])
+                    stp_points_flag_one = True
+                if float(points_here[0]) == vertex_points_temp[ckp[1]-1][0] and float(points_here[1]) == vertex_points_temp[ckp[1]-1][1]:
+                    print(points_here[1])
+                    print(vertex_points_temp[ckp[1]-1])
+                    stp_points_flag_two = True
+                print(stp_points_flag_one)
+                print(stp_points_flag_two)
+            if stp_points_flag_one:
                 # print("MAKING FLAG ONE TRUE as directly in street points - edges pairs on same street")
                 flagone=True
             elif check_street(stp.points,vertex_points_temp[ckp[0]-1]):
                 # print("MAKING FLAG ONE TRUE by same street  - edges pairs on same street")
                 flagone = True
-            if vertex_points_temp[ckp[1]-1] in stp.points:
+            stp_points_flag_one = False
+            if stp_points_flag_two:
                 # print("as returned true")
                 # print("MAKING FLAG two TRUE as directly in street points - edges pairs on same street")
                 flagtwo = True
@@ -246,14 +277,17 @@ def points_on_same_street(streets_and_points_temp, edges_points_all, vertex_poin
                 # print("as returned true")
                 # print("MAKING FLAG two TRUE by same street  - edges pairs on same street")
                 flagtwo = True
-            if check_vertex_between(vertex_points_temp[ckp[0]-1],vertex_points_temp[ckp[1]-1],vertex_points_temp,stp):
-                flagthree =False
+            stp_points_flag_two = False
+            if flagone and flagtwo:
+                if check_vertex_between(vertex_points_temp[ckp[0] - 1], vertex_points_temp[ckp[1] - 1],
+                                        vertex_points_temp, stp):
+                    flagthree = False
             if flagone == True and flagtwo == True and flagthree == True:
                 edges_indexes.append(ckp)
                 # print("printing edges inside loop")
                 # print(edges_indexes)
                 # print("Breaking the loop as both points are on same street")
-                break
+                # break
             flagthree = True
             flagone = False
             flagtwo = False
@@ -327,7 +361,7 @@ def is_point_between(intersection, vertex, checkpoint,type_of_function):
             return False
 
         elif int(0) <= (float(checkpoint[0])-float(points_one[0]))/(float(points_two[0])-float(points_one[0])) <= int(1) and int(0) <= (float(checkpoint[1])-float(points_one[1]))/(float(points_two[1])-float(points_one[1])) <=int(1) :
-            if (float(checkpoint[0])-float(points_one[0]))/(float(points_two[0])-float(points_one[0])) == (float(checkpoint[1])-float(points_one[1]))/(float(points_two[1])-float(points_one[1])) :
+            if round((float(checkpoint[0])-float(points_one[0]))*(float(points_two[1])-float(points_one[1])),6) == round((float(checkpoint[1])-float(points_one[1]))*(float(points_two[0])-float(points_one[0])),6) :
                 # print("returning true from is_point_between function - condition 4")
                 return True
             else:
@@ -375,7 +409,7 @@ def is_point_between(intersection, vertex, checkpoint,type_of_function):
             return False
 
         elif int(0) <= (float(checkpoint[0])-float(points_one_t[0]))/(float(points_two_t[0])-float(points_one_t[0])) <= int(1) and int(0) <= (float(checkpoint[1])-float(points_one_t[1]))/(float(points_two_t[1])-float(points_one_t[1])) <=int(1) :
-            if (float(checkpoint[0])-float(points_one_t[0]))/(float(points_two_t[0])-float(points_one_t[0])) == (float(checkpoint[1])-float(points_one_t[1]))/(float(points_two_t[1])-float(points_one_t[1])) :
+            if round((float(checkpoint[0])-float(points_one_t[0]))/(float(points_two_t[0])-float(points_one_t[0])),6) == round((float(checkpoint[1])-float(points_one_t[1]))/(float(points_two_t[1])-float(points_one_t[1])),6) :
                 # print("returning true from is_point_between function - condition 4")
                 return True
             else:

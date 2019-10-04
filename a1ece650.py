@@ -132,8 +132,8 @@ def main():
     while True:
         try:
             input_command = sys.stdin.readline()
-            # if input_command == '':
-            #     break
+            if input_command == '':
+                 break
             if input_command_check(input_command):
                 if input_command[0] == 'g':
                     command_g_function(streets_and_points)

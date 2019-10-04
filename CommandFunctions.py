@@ -41,10 +41,10 @@ def command_a_function(street_points):
     street_name=str(street_name_temp).lower()
     # print(type(street_name))
     if len(street_name) == 0:
-        print >> sys.stderr, "Error: Enter Street name along with points - command_a_function"
+        sys.stderr.write("Error: Enter Street name along with points\n")
     points_name = points.findall(street_points)
     if len(points_name) < 2:
-        print >> sys.stderr, "Error: Enter at least 2 points for each Street - command_a_function"
+        sys.stderr.write("Error: Enter at least 2 points for each Street\n")
     else:
         pass
         # print("Extracted points from command_a_function")
@@ -64,16 +64,16 @@ def command_c_function(street_points,streets_and_points_temp):
     points = re.compile(r'(\([0-9]+,[0-9]+\))\s*')
     points_name = points.findall(street_points)
     if len(points_name) < 2:
-        print >> sys.stderr, "Error: Enter at least 2 points for each Street - command_c_function"
+        sys.stderr.write("Error: Enter at least 2 points for each Street \n")
     if len(streets_and_points_temp) == 0:
-        print >> sys.stderr, "Error: First enter the street info and then try to change it"
+        sys.stderr.write("Error: First enter the street info and then try to change it\n")
     for sp in streets_and_points_temp:
         if sp.st_name == street_name:
             sp.points = points_name
             flag=False
     # print(streets_and_points_temp)
     if flag:
-        print >> sys.stderr, "Error:No such street name to change the info"
+        sys.stderr.write("Error: No such street name to change the info\n")
     flag=True
     return streets_and_points_temp
 
@@ -87,14 +87,14 @@ def command_r_function(street_points,streets_and_points_temp):
     street_name = str(street_name_temp).lower()
     # print(type(street_name))
     if len(streets_and_points_temp) == 0:
-        print >> sys.stderr, "Error: First enter the street info and then try to change it"
+        sys.stderr.write("Error: First enter the street info and then try to change it\n")
     for sp in streets_and_points_temp:
         if sp.st_name == street_name:
             streets_and_points_temp.remove(sp)
             flag_remove = False
             break
     if flag_remove :
-        print >> sys.stderr, 'Error: No Such street to remove'
+        sys.stderr.write("Error: No Such street to remove\n")
     flag_remove =True
     return streets_and_points_temp
 
@@ -108,10 +108,13 @@ def command_g_function(streets_and_points):
     edges_indexes = []
     global vertex_points
     vertex_points = []
-    streets_length=range(len(streets_and_points)-1)
+    streets_length=range(len(streets_and_points))
     # print(streets_length)
     for sp in streets_length:
-        calculate_intersection_points(streets_and_points[sp], streets_and_points[sp+1])
+        if (sp < len(streets_and_points) - 1):
+            calculate_intersection_points(streets_and_points[sp], streets_and_points[sp + 1])
+        else :
+            calculate_intersection_points(streets_and_points[sp], streets_and_points[0])
     # print("V = {")
     print_vertices_function(vertex_points)
     # length = range(len(vertex_points))
@@ -171,21 +174,63 @@ def intersection_points(graphpoints_temp):
     global vertex_points
     global vertex_inter_points
     try:
-        a = (x1*y2-y1*x2)*(x3-x4)-(x1-x2)*(x3*y4-y3*x4)
-        b = (x1*y2-y1*x2)*(y3-y4)-(y1-y2)*(x3*y4-y3*x4)
-        c = (x1-x2)*(y3-y4)-(y1-y2)*(x3-x4)
-        if calculate_distance(x1, y1, x2, y2) >= calculate_distance(x1, y1, float(a/c), float(b/c)):
-            if (a / c, b / c) not in vertex_points:
-                vertex_points.append((a / c, b / c))
-                vertex_inter_points.append((a / c, b / c))
-            if (x1, y1) not in vertex_points:
-                vertex_points.append((x1, y1))
-            if (x2, y2) not in vertex_points:
-                vertex_points.append((x2, y2))
-            if (x3, y3) not in vertex_points:
-                vertex_points.append((x3, y3))
-            if (x4, y4) not in vertex_points:
-                vertex_points.append((x4, y4))
+        if x1 == x2 == x3 == x4 == 0 or y1 == y2 == y3 == y4 == 0 :
+            if x1 == x2 == x3 == x4 == 0:
+                list_x = [y1,y2,y3,y4]
+                list_x.sort()
+                if (x1, y1) not in vertex_points:
+                    vertex_points.append((x1, y1))
+                if (x2, y2) not in vertex_points:
+                    vertex_points.append((x2, y2))
+                if (x3, y3) not in vertex_points:
+                    vertex_points.append((x3, y3))
+                if (x4, y4) not in vertex_points:
+                    vertex_points.append((x4, y4))
+                if (0,list_x[1]) not in vertex_points:
+                    vertex_inter_points.append((0,list_x[1]))
+                if (0,list_x[2])  not in vertex_points:
+                    vertex_inter_points.append((0,list_x[2]))
+                # print(list_x)
+                # print(vertex_inter_points)
+                pass
+            elif y1 == y2 == y3 == y4 == 0:
+                list_y = [x1, x2, x3, x4]
+                list_y.sort()
+                if (x1, y1) not in vertex_points:
+                    vertex_points.append((x1, y1))
+                if (x2, y2) not in vertex_points:
+                    vertex_points.append((x2, y2))
+                if (x3, y3) not in vertex_points:
+                    vertex_points.append((x3, y3))
+                if (x4, y4) not in vertex_points:
+                    vertex_points.append((x4, y4))
+                if (list_y[1],0) not in vertex_inter_points:
+                    vertex_inter_points.append((list_y[1],0))
+                if (list_y[2],0)  not in vertex_inter_points:
+                    vertex_inter_points.append((list_y[2],0))
+                # print(list_y)
+                # print(vertex_inter_points)
+        else:
+            a = (x1 * y2 - y1 * x2) * (x3 - x4) - (x1 - x2) * (x3 * y4 - y3 * x4)
+            b = (x1 * y2 - y1 * x2) * (y3 - y4) - (y1 - y2) * (x3 * y4 - y3 * x4)
+            c = (x1 - x2) * (y3 - y4) - (y1 - y2) * (x3 - x4)
+            if round(calculate_distance(x1, y1, x2, y2), 6) == round(
+                    (calculate_distance(x1, y1, float(a / c), float(b / c))) + calculate_distance(x2, y2, float(a / c),
+                                                                                                  float(b / c)),
+                    6) and round(calculate_distance(x3, y3, x4, y4), 6) == round(
+                    (calculate_distance(x3, y3, float(a / c), float(b / c))) + calculate_distance(x4, y4, float(a / c),
+                                                                                                  float(b / c)), 6):
+                if (a / c, b / c) not in vertex_points:
+                    vertex_points.append((a / c, b / c))
+                    vertex_inter_points.append((a / c, b / c))
+                if (x1, y1) not in vertex_points:
+                    vertex_points.append((x1, y1))
+                if (x2, y2) not in vertex_points:
+                    vertex_points.append((x2, y2))
+                if (x3, y3) not in vertex_points:
+                    vertex_points.append((x3, y3))
+                if (x4, y4) not in vertex_points:
+                    vertex_points.append((x4, y4))
     except ZeroDivisionError:
         # print("Exception occurred")
         return None
@@ -445,10 +490,10 @@ def print_vertices_function(vertex_points_temp):
     # print(type(vertex_points_temp))
     # print(type(vertex_points_temp[0]))
     length = range(len(vertex_points_temp))
-    print("V = {")
+    print('V={')
     for i in length:
         # print(type(vertex_points_temp[i]))
-        print('{0}: ({1:.2f},{2:.2f})'.format(i + 1, vertex_points_temp[i][0],vertex_points_temp[i][1]))
+        print('{0}:({1:.2f},{2:.2f})'.format(i + 1, vertex_points_temp[i][0],vertex_points_temp[i][1]))
     print("}")
 
 
@@ -462,10 +507,12 @@ def print_edges_function(edges_indexes):
     for tu in edges_indexes:
         if tuple_reverse(tu) in edges_indexes:
             edges_indexes.remove(tuple_reverse(tu))
-    print("E = {")
+    print("E={")
     for tup in edges_indexes:
-        print("<{0},{1}>".format(tup[0],tup[1]))
-    # print(edges_indexes)
+        if edges_indexes.index(tup) != len(edges_indexes) - 1:
+            print("<{0},{1}>,".format(tup[0], tup[1]))
+        else:
+            print("<{0},{1}>".format(tup[0], tup[1]))
     print("}")
 
 

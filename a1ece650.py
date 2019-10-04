@@ -32,7 +32,7 @@ def update_streets_and_points(streets_and_points_temp):
     try :
         streets_and_points = streets_and_points_temp
     except :
-        print >> sys.stderr, "Error: Make Sure inputs are valid"
+        sys.stderr.write("Error: Make Sure inputs are valid\n")
 
 
 def input_command_check(points_in_temp):
@@ -48,17 +48,17 @@ def input_command_check(points_in_temp):
                         if len(re.findall(r'"\s+\(', points_in)) > 0:
                             return True
                         else:
-                            print >> sys.stderr, 'Error:Points/space is missing after street name'
+                            sys.stderr.write("Error: Points/space is missing after street name\n")
                             return False
                     else:
-                        print >> sys.stderr, 'Error: Brackets are missing for Points  after street name'
+                        sys.stderr.write("Error: Brackets are missing for Points  after street name\n")
                         return False
                 else:
-                    print >> sys.stderr, 'Error:Space is missing after command Character'
+                    sys.stderr.write("Error: Space is missing after command Character\n")
                     # print("Error:Space is missing after command Character")
                     return False
             else:
-                print >> sys.stderr, "Error:The remaining part of Command is missing"
+                sys.stderr.write("Error: The remaining part of Command is missing\n")
                 # print("Error:The remaining part of Command is missing")
                 return False
         elif points_in[0] == 'r':
@@ -71,26 +71,26 @@ def input_command_check(points_in_temp):
                             point_quotes.findall(points_in)) == 2:
                         return True
                     else:
-                        print >> sys.stderr, "Error: There should not be any \( or \) and there should be street name in Quotes"
+                        sys.stderr.write("Error: There should not be any \( or \) and there should be street name in Quotes\n")
                         # print("Error: There should not be any \( or \) and there should be street name in Quotes")
                         return False
                 else:
-                    print >> sys.stderr, "Error: Separate Street name from command using Space"
+                    sys.stderr.write("Error: Separate Street name from command using Space\n")
                     return False
             else:
-                print >> sys.stderr, "Error:Enter Street name after command"
+                sys.stderr.write("Error: Enter Street name after command\n")
                 return False
         elif points_in[0] == 'g':
             if points_in.rstrip() == 'g':
                 return True
             else:
-                print >> sys.stderr, "Error: For graph command 'g' there should not be any other inputs"
+                sys.stderr.write("Error: For graph command 'g' there should not be any other inputs\n")
                 return False
         else:
-            print >> sys.stderr, "Error: Input command must be either 'a' or 'r' or 'c' with a space after command followed by street name"
+            sys.stderr.write("Error: Input command must be either 'a' or 'r' or 'c' with a space after command followed by street name\n")
             return False
     except :
-        print >> sys.stderr, "Error: Make Sure inputs are valid"
+        sys.stderr.write("Error: Make Sure inputs are valid\n")
 
 
 
@@ -104,7 +104,7 @@ def input_command_split(input_cmd_temp):
             if len(input_cmd_temp.split()) > 2:
                 temp_streets_and_points = command_a_function(input_cmd[1])
                 if len(temp_streets_and_points) == 0:
-                    print >> sys.stderr, "Error: Enter points properly"
+                    sys.stderr.write("Error: Enter points properly\n")
                     return None
                 for sap in streets_and_points:
                     if sap.st_name == temp_streets_and_points[0]:
@@ -112,36 +112,35 @@ def input_command_split(input_cmd_temp):
                 if flag_street:
                     streets_and_points.append(Street(temp_streets_and_points))
                 else:
-                    print >> sys.stderr, "Error: Street already exists"
+                    sys.stderr.write("Error: Street already exists\n")
                 flag_street=True
             else:
-                print >> sys.stderr, "Error:Separate street name from command and points using spaces or enter the missed points"
+                sys.stderr.write("Error: Separate street name from command and points using spaces or enter the missed points\n")
                 return None
         elif input_cmd[0] == 'c':
             update_streets_and_points(command_c_function(input_cmd[1], streets_and_points))
         elif input_cmd[0] == 'r':
             update_streets_and_points(command_r_function(input_cmd[1], streets_and_points))
         else:
-            print >> sys.stderr, "Error:There is somme error in the input.Please check the documentation for more details"
+            sys.stderr.write("Error: There is somme error in the input.Please check the documentation for more details\n")
             return None
     except :
-        print >> sys.stderr, "Error: Make Sure inputs are valid"
+        sys.stderr.write("Error: Make Sure inputs are valid\n")
 
 
 def main():
     while True:
         try:
             input_command = sys.stdin.readline()
-            if input_command == '':
-                break
+            # if input_command == '':
+            #     break
             if input_command_check(input_command):
                 if input_command[0] == 'g':
                     command_g_function(streets_and_points)
                 else:
                     input_command_split(input_command)
         except:
-            print >> sys.stderr, 'Error: Please make sure inputs are Correct'
-    print 'Finished reading input'
+            sys.stderr.write("Error: Please make sure inputs are Correct")
     sys.exit(0)
      
 
